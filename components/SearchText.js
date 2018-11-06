@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements';
+import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 
 export class SearchText extends React.Component {
 
@@ -8,7 +8,11 @@ export class SearchText extends React.Component {
     super();
     this.state = {
       value: ''
-    }
+    };
+  }
+
+  componentDidMount() {
+    this.input.focus();
   }
 
   onChange(value) {
@@ -23,8 +27,9 @@ export class SearchText extends React.Component {
     return (
       <React.Fragment>
         <FormLabel>Search an artist</FormLabel>
-        <FormInput onChangeText={(event) => this.onChange(event) } />
-        <Button title='Search' onPress={() => this.onSubmitSearch() }/>
+        <FormInput ref={input => this.input = input} onChangeText={(event) => this.onChange(event) } />
+        <FormValidationMessage></FormValidationMessage>
+        <Button title='Search' onPress={() => this.onSubmitSearch() } />
       </React.Fragment>
     )
   }
