@@ -15,6 +15,10 @@ export const searchTracks = singerName => {
       const albums = response.data.data.map(item => item.album);
       const uniqueAlbums = _.uniqBy(albums, 'title');
       return uniqueAlbums;
-    });
+    }
+  );
+};
 
+export const getAlbumTracks = albumId => {
+  return axiosInstance.get(`album/${albumId}`).then(response => response.data.tracks.data);
 }

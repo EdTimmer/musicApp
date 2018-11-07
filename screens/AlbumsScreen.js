@@ -21,20 +21,23 @@ export default class AlbumsScreen extends React.Component {
     super();
     this.state = {
       albums: [],
-      isFetching: false
+      isFetching: false,
+      artist: ''
     };
     this.searchTracks = this.searchTracks.bind(this);
     this.renderBottomNavigation = this.renderBottomNavigation.bind(this);
   }
 
   searchTracks(artist) {
-    this.setState({isFetching: true, albums: []})
+    this.setState({isFetching: true, albums: [], artist})
+
     actions.searchTracks(artist)
       .then(albums => this.setState({ albums, isFetching: false }))
-      .catch(err => this.setState({albums: [], isFetching: false}))
+      .catch(() => this.setState({albums: [], isFetching: false}))
   }
 
   renderBottomNavigation(album) {
+    const {artist} = this.state;
     return (
       <View style={styles.albumMenu}>
         <Icon onPress={() => {}} 
@@ -44,7 +47,7 @@ export default class AlbumsScreen extends React.Component {
             color='#f50'
             size={30}
         />
-        <Icon onPress={() => { this.props.navigation.navigate('AlbumDetail', {album})}} 
+        <Icon onPress={() => { this.props.navigation.navigate('AlbumDetail', {album, artist})}} 
           raised
           name='info'
           type='font-awesome'
