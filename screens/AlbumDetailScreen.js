@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Linking } from 'react-native';
+import { ScrollView, StyleSheet, View, Linking, Alert } from 'react-native';
 import { Avatar, Text, Icon, Divider, List, ListItem } from 'react-native-elements';
 
 import * as actions from '../actions';
@@ -24,7 +24,37 @@ export default class AlbumDetailScreen extends React.Component {
       .catch(error => console.error(error));
   }
 
-  renderTracks() {
+  async saveTrackToFavorite(album, track) {
+    const favoriteAlbums = await actions.retrieveData('favoriteAlbums') || {};
+
+    let albumData = favoriteAlbums[album.id];
+
+    if (!albumData) {
+      albumData = album;
+    }
+
+    if (!albumData['tracks']) {
+      albumData['tracks'] = {};
+    }
+
+    albumData['tracks'][track.id] = track;
+    favoriteAlbums[album.id] = albumData;
+
+    const success =  actions.storeData('favoriteAlbums', favoriteAlbums);
+
+    if (success) {
+      Alert.alert(
+        'Track Added!',
+        `Track ${track.title} from ${track.artist.name} was added to Favorites!`,
+        [
+          {text: 'Continue', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+    }
+  }
+
+  renderTracks(album) {
     const { tracks } = this.state;
     if (tracks && tracks.length > 0) {
       return tracks.map((track, index) => {
@@ -32,13 +62,13 @@ export default class AlbumDetailScreen extends React.Component {
           <ListItem key={index}
             title={track.title}
             leftIcon={{ name: 'play-arrow' }}
-            onPress={() => Linking.openURL(track.preview)}
+            leftIconOnPress={() => Linking.openURL(track.preview)}
             rightIcon={
               <Icon raised
                     name='star'
                     type='font-awesome'
                     color='#f50'
-                    onPress={() => {}}
+                    onPress={() => this.saveTrackToFavorite(album, track)}
               />
             }
           />
@@ -72,7 +102,7 @@ export default class AlbumDetailScreen extends React.Component {
           </View>
           <Divider style={{ backgroundColor: 'black' }} />
           <List containerStyle={{paddingTop: 0, marginTop: 0}}>
-            {this.renderTracks()}
+            {this.renderTracks(album)}
           </List>
         </ScrollView>
       );
