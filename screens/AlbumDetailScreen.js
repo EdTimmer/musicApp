@@ -7,6 +7,11 @@ import * as actions from '../actions';
 export default class AlbumDetailScreen extends React.Component {
   static navigationOptions = {
     title: 'Album Detail',
+    headerTitleStyle: {
+      alignSelf: 'center',
+      textAlign: 'center',
+      width: '75%'
+    },
   };
 
   constructor() {

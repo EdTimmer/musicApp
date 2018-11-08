@@ -16,7 +16,7 @@ const menuList = [
   {
     title: 'Search Albums',
     subtitle: 'Search your favorite music',
-    icon: 'music',
+    icon: 'search',
     navigateTo: 'Albums'
   },
   {

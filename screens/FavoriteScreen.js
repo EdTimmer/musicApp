@@ -9,6 +9,11 @@ import _ from 'lodash';
 export default class FavoriteScreen extends React.Component {
   static navigationOptions = {
     title: 'Favorite Albums',
+    headerTitleStyle: {
+      alignSelf: 'center',
+      textAlign: 'center',
+      width: '75%'
+    },
   };
 
   constructor() {
